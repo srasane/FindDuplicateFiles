@@ -12,10 +12,41 @@ import java.util.Map;
 
 public class FindDuplicateFiles {
 
-	Map <String, List<String>>fileMap = new HashMap<String, List<String>>();
+	Map <String, List<String>> fileMap;
+	public FindDuplicateFiles(){
+		fileMap = new HashMap<String, List<String>>();
+	}
 	
+	public int numOfFilesChecked(){
+		int size = 0;
+		for(String key : fileMap.keySet()){
+			size += fileMap.get(key).size();
+		}
+		return size;
+	}
 
-	public List<List<String>> searchForDuplicateFilesInCurrentDir(File directory){
+	
+	/**
+	 * if no path is found default path is set to root directory
+	 * @param path
+	 * @return
+	 */
+	public String fileValidation(String path){
+		if((new File(path).exists())){
+			return path;
+		}
+		else if(path == null || path.isEmpty()){
+			System.out.println("Setting default path" + File.listRoots()[0].getAbsolutePath());
+			return File.listRoots()[0].getAbsolutePath();
+		}
+		else{
+			System.out.println("Enter valid folder path");
+			return null;
+		}
+	}
+	
+	public List<List<String>> searchForDuplicateFilesInCurrentDir(String directoryStr){
+		File directory = new File(directoryStr);
 		List<List<String>>dupfiles = new ArrayList<List<String>>();
 		groupFiles(directory);
 		for(String key : fileMap.keySet()){
